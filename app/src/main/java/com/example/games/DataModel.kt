@@ -81,11 +81,43 @@ class Tablero{
    *
    * */
     fun gano(player: Ficha): Boolean {
-        var win  = false
+        var cruz = 0
+        var bola = 0
+        for (r in 0 until ancho) {
+            (0 until alto)
+                .filter { celdas[r][it]?.estadoCelda != Ficha.VACIO }
+                .forEach {
+                    if (celdas[r][it]?.estadoCelda == Ficha.CRUZ) cruz++
+                    else bola++
+                }
+            if(player == Ficha.CRUZ && cruz == 3) return true
+            if(player == Ficha.BOLA && bola == 3) return true
+            bola = 0
+            cruz = 0
+        }
 
 
+        for (c in 0 until alto) {
+            (0 until ancho)
+                .filter { celdas[it][c]?.estadoCelda != Ficha.VACIO }
+                .forEach {
+                    if (celdas[it][c]?.estadoCelda == Ficha.CRUZ) cruz++
+                    else bola++
+                }
+            if(player == Ficha.CRUZ && cruz == 3) return true
+            if(player == Ficha.BOLA && bola == 3) return true
+            bola = 0
+            cruz = 0
+        }
 
-        return win
+        if(celdas[0][0]?.estadoCelda == player) {
+            if (celdas[0][0]?.estadoCelda == celdas[1][1]?.estadoCelda &&
+                celdas[2][2]?.estadoCelda == celdas[1][1]?.estadoCelda) return true
+            if (celdas[0][2]?.estadoCelda == celdas[1][1]?.estadoCelda &&
+                celdas[2][0]?.estadoCelda == celdas[1][1]?.estadoCelda) return true
+        }
+
+        return false
     }
     /*
 *
@@ -99,11 +131,26 @@ class Tablero{
 * Completa: setTablero y setFecha, en setFicha utiliza un when
 * */
     fun setTablero( p1: ArrayList<Int>,  p2: ArrayList<Int>){
-
+        for(celda in p1) {
+            setFicha(celda, Ficha.CRUZ)
+        }
+        for(celda in p2) {
+            setFicha(celda, Ficha.BOLA)
+        }
     }
 
     fun setFicha(posicion: Int,ficha: Ficha ){
-
+        when (posicion){
+            1 -> celdas[0][0]?.estadoCelda = ficha
+            2 -> celdas[0][1]?.estadoCelda = ficha
+            3 -> celdas[0][2]?.estadoCelda = ficha
+            4 -> celdas[1][0]?.estadoCelda = ficha
+            5 -> celdas[1][1]?.estadoCelda = ficha
+            6 -> celdas[1][2]?.estadoCelda = ficha
+            7 -> celdas[2][0]?.estadoCelda = ficha
+            8 -> celdas[2][1]?.estadoCelda = ficha
+            9 -> celdas[2][2]?.estadoCelda = ficha
+        }
     }
 
 }
@@ -164,7 +211,7 @@ class JugadorAutomatic(tablero: Tablero) {
                     * Agrega el llamado recursivo de minimax y obtén la calificación Actual
 
                     * */
-                    calificacionActual = 0
+                    calificacionActual = minimax(profundidad-1, contrario)[0]
                     if(calificacionActual > mejorCalificacion) {
                         mejorCalificacion = calificacionActual
                         mejorRenglon = it[0]
@@ -179,7 +226,7 @@ class JugadorAutomatic(tablero: Tablero) {
                     * Agrega el llamado recursivo de minimax y obtén la calificación Actual
 
                     * */
-                    calificacionActual = 0
+                    calificacionActual = minimax(profundidad-1, miFicha)[0]
                     if(calificacionActual < mejorCalificacion) {
                         mejorCalificacion = calificacionActual
                         mejorRenglon = it[0]
