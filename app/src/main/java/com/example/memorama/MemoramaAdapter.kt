@@ -13,6 +13,7 @@ class MemoramaAdapter(val chips: ArrayList<Chip>):
     RecyclerView.Adapter<MemoramaAdapter.ChipViewHolder>(){
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ChipViewHolder {
         val view = LayoutInflater.from(p0.context).inflate(R.layout.renglon, p0, false)
+
         return ChipViewHolder(view)
     }
 
@@ -22,6 +23,7 @@ class MemoramaAdapter(val chips: ArrayList<Chip>):
 
     override fun onBindViewHolder(p0: ChipViewHolder, p1: Int) {
         p0.imageView.setImageResource(chips[p1].idImage)
+
     }
 
 
@@ -30,7 +32,17 @@ class MemoramaAdapter(val chips: ArrayList<Chip>):
 
         init {
             item.setOnClickListener {
-                imageView.setImageResource(R.drawable.rocket)
+                val randomInteger = (1..10).shuffled().first()
+                when(randomInteger) {
+                    1 -> imageView.setImageResource(R.drawable.ninetales)
+                    2 -> imageView.setImageResource(R.drawable.pikachu)
+                    3 -> imageView.setImageResource(R.drawable.mewtwo)
+                    4 -> imageView.setImageResource(R.drawable.rapidash)
+                    5 -> imageView.setImageResource(R.drawable.eevee)
+                    6 -> imageView.setImageResource(R.drawable.charizard)
+                    7 -> imageView.setImageResource(R.drawable.wobbuffet)
+                    8 -> imageView.setImageResource(R.drawable.jigglypuff)
+                }
             }
         }
     }

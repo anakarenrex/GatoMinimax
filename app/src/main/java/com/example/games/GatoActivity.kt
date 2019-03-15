@@ -88,7 +88,6 @@ class GatoActivity : AppCompatActivity() {
 
 
 
-
         /*
    Completa el código:
 
@@ -126,7 +125,7 @@ class GatoActivity : AppCompatActivity() {
      * */
     fun nextFicha(renglon : Int, columna : Int) : Pair<Int, Button> {
         var number = 0
-        var button : Button = findViewById(R.id.button2)
+        var button : Button = findViewById(R.id.button)
 
         if(renglon == 0) {
             when (columna) {
