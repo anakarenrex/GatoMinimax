@@ -187,6 +187,20 @@ class JugadorAutomatic(tablero: Tablero) {
     }
 
     fun minimax(profundidad: Int, jugador: Ficha): Array<Int> {
+
+        /*
+        Challenge gato
+        1. Lo que hace la función de minimax y su recursión es que el jugador automático tenga el valor más bajo y
+        conforme cada jugada vaya maximizando ese valor para estar seguro de que ganará o empatará; del otro lado lo
+        que quiere es que el oponente (el jugador humano) tenga el valor más alto al principio y en cada recursión ir
+        minimizando ese valor para que el oponente tenga solo la oportunidad de perder o empatar.
+        2. El argumento de depth es cada jugada posible que puede tener el jugador automático, es decir, el valor que
+        se usará para hacer una búsqueda en profundidad del árbol de posibilidades de juego.
+        3. El depth se calcula según conviene en cada juego (o donde se vaya a usar el algoritmo). Por ejemplo, en el
+        caso del gato son 7 porque el oponente (el jugador humano) hace el primer y el último movimiento, es decir, de
+        las 9 movidas posibles el jugador automático solo tiene que calcular 7 posibles escenarios.
+         */
+
         val siguientesMovimientos: MutableList<Array<Int>> = generaMovimientos()
 
         var mejorCalificacion = when (miFicha) {
