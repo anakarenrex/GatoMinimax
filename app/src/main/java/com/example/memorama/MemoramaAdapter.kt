@@ -8,7 +8,7 @@ import android.widget.ImageView
 import com.example.games.R
 import kotlinx.android.synthetic.main.renglon.view.*
 
-class MemoramaAdapter(val chips: ArrayList<Chip>):
+class MemoramaAdapter(val chips: ArrayList<Chip>, val cardKeys: HashMap<Int,String>):
 
     RecyclerView.Adapter<MemoramaAdapter.ChipViewHolder>(){
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ChipViewHolder {
@@ -23,6 +23,7 @@ class MemoramaAdapter(val chips: ArrayList<Chip>):
 
     override fun onBindViewHolder(p0: ChipViewHolder, p1: Int) {
         p0.imageView.setImageResource(chips[p1].idImage)
+        p0.imageView.id = (chips[p1].pos)
 
     }
 
@@ -32,7 +33,17 @@ class MemoramaAdapter(val chips: ArrayList<Chip>):
 
         init {
             item.setOnClickListener {
-                val randomInteger = (1..10).shuffled().first()
+                when(cardKeys[imageView.id]){
+                    "ninetales"->imageView.setImageResource(R.drawable.ninetales)
+                    "pikachu"->imageView.setImageResource(R.drawable.pikachu)
+                    "charizard"-> imageView.setImageResource(R.drawable.charizard)
+                    "eevee"-> imageView.setImageResource(R.drawable.eevee)
+                    "jigglypuff"-> imageView.setImageResource(R.drawable.jigglypuff)
+                    "mewtwo"-> imageView.setImageResource(R.drawable.mewtwo)
+                    "rapidash"->imageView.setImageResource(R.drawable.rapidash)
+                    "wobbuffet"->imageView.setImageResource(R.drawable.wobbuffet)
+                }
+                /*val randomInteger = (1..10).shuffled().first()
                 when(randomInteger) {
                     1 -> imageView.setImageResource(R.drawable.ninetales)
                     2 -> imageView.setImageResource(R.drawable.pikachu)
@@ -42,7 +53,7 @@ class MemoramaAdapter(val chips: ArrayList<Chip>):
                     6 -> imageView.setImageResource(R.drawable.charizard)
                     7 -> imageView.setImageResource(R.drawable.wobbuffet)
                     8 -> imageView.setImageResource(R.drawable.jigglypuff)
-                }
+                }*/
             }
         }
     }
