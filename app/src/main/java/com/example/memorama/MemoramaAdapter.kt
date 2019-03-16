@@ -1,14 +1,18 @@
 package com.example.memorama
 
+import android.content.Context
+import android.os.Handler
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.example.games.R
-import kotlinx.android.synthetic.main.renglon.view.*
+import java.util.*
 
-class MemoramaAdapter(val chips: ArrayList<Chip>, val cardKeys: HashMap<Int,String>):
+
+class MemoramaAdapter(val context:Context, val chips: ArrayList<Chip>, val cardKeys: HashMap<Int,String>):
 
     RecyclerView.Adapter<MemoramaAdapter.ChipViewHolder>(){
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ChipViewHolder {
@@ -30,19 +34,32 @@ class MemoramaAdapter(val chips: ArrayList<Chip>, val cardKeys: HashMap<Int,Stri
 
     inner class ChipViewHolder(item : View) : RecyclerView.ViewHolder(item){
         val imageView = item.findViewById<ImageView>(R.id.chip)
+        var handlerUI = Handler()
+
 
         init {
             item.setOnClickListener {
-                when(cardKeys[imageView.id]){
-                    "ninetales"->imageView.setImageResource(R.drawable.ninetales)
-                    "pikachu"->imageView.setImageResource(R.drawable.pikachu)
-                    "charizard"-> imageView.setImageResource(R.drawable.charizard)
-                    "eevee"-> imageView.setImageResource(R.drawable.eevee)
-                    "jigglypuff"-> imageView.setImageResource(R.drawable.jigglypuff)
-                    "mewtwo"-> imageView.setImageResource(R.drawable.mewtwo)
-                    "rapidash"->imageView.setImageResource(R.drawable.rapidash)
-                    "wobbuffet"->imageView.setImageResource(R.drawable.wobbuffet)
+
+                Log.d("CHIP", "" + cardKeys[imageView.id])
+                when (cardKeys[imageView.id]) {
+                    "ninetales" -> imageView.setImageResource(R.drawable.ninetales)
+                    "pikachu" -> imageView.setImageResource(R.drawable.pikachu)
+                    "charizard" -> imageView.setImageResource(R.drawable.charizard)
+                    "eevee" -> imageView.setImageResource(R.drawable.eevee)
+                    "jigglypuff" -> imageView.setImageResource(R.drawable.jigglypuff)
+                    "mewtwo" -> imageView.setImageResource(R.drawable.mewtwo)
+                    "rapidash" -> imageView.setImageResource(R.drawable.rapidash)
+                    "wobbuffet" -> imageView.setImageResource(R.drawable.wobbuffet)
                 }
+
+                handlerUI.postDelayed(Runnable {
+                    if (context is MemoramaActivity) {
+                        (context as MemoramaActivity).startChrono()
+                        var match = (context as MemoramaActivity).turnChip(imageView, item)
+                        if(match) item.isClickable = false
+                    } },
+                    500)
+
                 /*val randomInteger = (1..10).shuffled().first()
                 when(randomInteger) {
                     1 -> imageView.setImageResource(R.drawable.ninetales)
