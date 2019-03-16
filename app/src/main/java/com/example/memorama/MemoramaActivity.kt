@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.activity_memorama2.*
 
 
 class MemoramaActivity : AppCompatActivity() {
-    private val TIME: Long = 90*1000
+    private val TIME: Long = 60*1000
 
     val pokemon = arrayOf("charizard","eevee","jigglypuff","mewtwo",
         "ninetales","pikachu","rapidash","wobbuffet")
@@ -158,6 +158,7 @@ class MemoramaActivity : AppCompatActivity() {
         chronometer = findViewById(R.id.chronometer)
         chronometer?.isCountDown = true
         chronometer?.base = SystemClock.elapsedRealtime() + TIME
+        isChronoRunning = false
     }
     fun startChrono(){
         if (!isChronoRunning) {
@@ -167,6 +168,8 @@ class MemoramaActivity : AppCompatActivity() {
                 if (SystemClock.elapsedRealtime() >= chronometer.base) {
                     Toast.makeText(this, "Se acabo el tiempo!", Toast.LENGTH_LONG).show()
                     chronometer.stop()
+                    matches = 0
+                    startGame()
                 }
             }
             chronometer?.start()
@@ -178,7 +181,6 @@ class MemoramaActivity : AppCompatActivity() {
         if(count >= 2) {
             count = 0
             if (cardsKeys[chip!!.id].equals(cardsKeys[image.id]) && chip!!.id != image.id) {
-                Log.d("RES", "YEEEEIH" )
                 item.visibility = View.GONE
                 item.isClickable = false
                 lastItem?.isClickable = false
