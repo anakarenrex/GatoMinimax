@@ -59,18 +59,6 @@ class MemoramaAdapter(val context:Context, val chips: ArrayList<Chip>, val cardK
                         if(match) item.isClickable = false
                     } },
                     500)
-
-                /*val randomInteger = (1..10).shuffled().first()
-                when(randomInteger) {
-                    1 -> imageView.setImageResource(R.drawable.ninetales)
-                    2 -> imageView.setImageResource(R.drawable.pikachu)
-                    3 -> imageView.setImageResource(R.drawable.mewtwo)
-                    4 -> imageView.setImageResource(R.drawable.rapidash)
-                    5 -> imageView.setImageResource(R.drawable.eevee)
-                    6 -> imageView.setImageResource(R.drawable.charizard)
-                    7 -> imageView.setImageResource(R.drawable.wobbuffet)
-                    8 -> imageView.setImageResource(R.drawable.jigglypuff)
-                }*/
             }
         }
     }

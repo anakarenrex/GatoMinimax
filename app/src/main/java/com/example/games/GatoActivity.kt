@@ -3,6 +3,7 @@ package com.example.games
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
@@ -21,6 +22,8 @@ class GatoActivity : AppCompatActivity() {
 
     val tablero = Tablero()
     val auto = JugadorAutomatic(tablero)
+    var buttons = listOf<Button>()
+    var finished = false
 
     var player = 1;
     var p1 = ArrayList<Int>()
@@ -28,6 +31,19 @@ class GatoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+
+        buttons = listOf(findViewById(R.id.button),
+            findViewById(R.id.button2),
+            findViewById(R.id.button3),
+            findViewById(R.id.button4),
+            findViewById(R.id.button5),
+            findViewById(R.id.button6),
+            findViewById(R.id.button7),
+            findViewById(R.id.button8),
+            findViewById(R.id.button9))
+
+
         auto.asignaFicha(Ficha.BOLA)
         /*
         * Completa el códig:
@@ -94,21 +110,13 @@ class GatoActivity : AppCompatActivity() {
    Llama a la función de "move" utilzando un Handler().postDelayed de 1 segundo
 
     * */
+        checkWin()
+        gameOn(buttonCode, selectedButton)
+
         Handler().postDelayed({
             move()
-        }, 1000) // time in milliseconds
+        },1000)
 
-        gameOn(buttonCode,selectedButton)
-       if (andTheWinnerIs(p1) ){
-           Toast.makeText(this,
-               "AND the winner is PLAYER 1", Toast.LENGTH_LONG).show()
-       }else if(andTheWinnerIs(p2)){
-           Toast.makeText(this,
-               "AND the winner is PLAYER 2", Toast.LENGTH_LONG).show()
-       }else if(tablero.empate()){
-           Toast.makeText(this,
-               "TIE!", Toast.LENGTH_LONG).show()
-       }
 
     }
 
@@ -125,40 +133,30 @@ class GatoActivity : AppCompatActivity() {
      * */
     fun nextFicha(renglon : Int, columna : Int) : Pair<Int, Button> {
         var number = 0
-        var button : Button = findViewById(R.id.button)
 
         if(renglon == 0) {
             when (columna) {
-                0 -> {number = 1
-                     button = findViewById(R.id.button)}
-                1 -> {number = 2
-                    button = findViewById(R.id.button2)}
-                2 -> {number = 3
-                    button = findViewById(R.id.button3)}
+                0 -> number = 1
+                1 -> number = 2
+                2 -> number = 3
             }
         }
         if(renglon == 1) {
             when (columna) {
-                0 -> {number = 4
-                    button = findViewById(R.id.button4)}
-                1 -> {number = 5
-                    button = findViewById(R.id.button5)}
-                2 -> {number = 6
-                    button = findViewById(R.id.button6)}
+                0 -> number = 4
+                1 -> number = 5
+                2 -> number = 6
             }
         }
         if(renglon == 2) {
             when (columna) {
-                0 -> {number = 7
-                    button = findViewById(R.id.button7)}
-                1 -> {number = 8
-                    button = findViewById(R.id.button8)}
-                2 -> {number = 9
-                    button = findViewById(R.id.button9)}
+                0 -> number = 7
+                1 -> number = 8
+                2 -> number = 9
             }
         }
 
-        var pair = Pair(number, button)
+        var pair = Pair(number, buttons[number-1])
         return pair
     }
 
@@ -173,10 +171,31 @@ class GatoActivity : AppCompatActivity() {
 
      * */
 
+    fun checkWin(){
+        if (andTheWinnerIs(p1) ){
+            Toast.makeText(this,
+                "AND the winner is PLAYER 1", Toast.LENGTH_LONG).show()
+            finished=true
+        }else if(andTheWinnerIs(p2)){
+            Toast.makeText(this,
+                "AND the winner is PLAYER 2", Toast.LENGTH_LONG).show()
+            finished=true
+        }else if(tablero.empate()){
+            Toast.makeText(this,
+                "TIE!", Toast.LENGTH_LONG).show()
+            finished=true
+        }
+    }
+
     fun move(){
-        auto.tablero.setTablero(p1,p2)
-        var array = auto.calculaMovimiento()
-        var pair = nextFicha(array!![0], array[1])
-        gameOn(pair.first, pair.second)
+
+        auto.tablero.setTablero(p1, p2)
+        checkWin()
+        if(!finished) {
+            var array = auto.calculaMovimiento()
+            var pair = nextFicha(array!![0], array[1])
+            gameOn(pair.first, pair.second)
+            checkWin()
+        }
     }
 }
