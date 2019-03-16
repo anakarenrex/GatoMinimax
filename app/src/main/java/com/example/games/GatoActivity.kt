@@ -66,6 +66,7 @@ class GatoActivity : AppCompatActivity() {
             p2.add(buttonCode)
             player = 1
         }
+
         selectedButton.isEnabled = false
     }
 
@@ -112,11 +113,13 @@ class GatoActivity : AppCompatActivity() {
     * */
         checkWin()
         gameOn(buttonCode, selectedButton)
-
-        Handler().postDelayed({
-            move()
-        },1000)
-
+        if(!finished) {
+            Handler().postDelayed({
+                move()
+            }, 500)
+        } else {
+            restart()
+        }
 
     }
 
@@ -196,6 +199,29 @@ class GatoActivity : AppCompatActivity() {
             var pair = nextFicha(array!![0], array[1])
             gameOn(pair.first, pair.second)
             checkWin()
+            if(finished){
+                restart()
+            }
+        } else{
+            restart()
         }
+    }
+
+    fun restart(){
+        Handler().postDelayed({
+            if(finished){
+                tablero.init()
+                p1.clear()
+                p2.clear()
+                player = 1
+                finished = false
+                for(button in buttons){
+                    button.text = ""
+                    button.isEnabled = true
+                    button.setBackgroundResource(R.color.material_grey_100)
+                }
+            }
+        }, 500)
+
     }
 }
